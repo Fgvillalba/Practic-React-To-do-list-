@@ -1,29 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
 
-const todo1 = {
-	id: 1,
-	title: "Todo #1",
-	description: "Desc del Todo #1",
-	complete: false,
-};
-
-const todo2 = {
-	id: 2,
-	title: "Todo #2",
-	description: "Desc del Todo #2",
-	complete: true,
-};
-
-const initialTodos = [todo1, todo2];
+const localTodos = JSON.parse(
+	localStorage.getItem("todos") //obtengo los todos del local storage, en el LS los todos son un string por eso hay que parsearlo
+);
 
 const App = () => {
-	const [todos, setTodos] = useState(initialTodos);
+	const [todos, setTodos] = useState(localTodos || []);
 	const [todoEdit, setTodoEdit] = useState(null);
 
+	useEffect(() => {
+		localStorage.setItem("todos", JSON.stringify(todos)); //grabo los todos como un string en el LS
+	}, [todos]);
+
 	const deleteTodo = (todoId) => {
-		if (todoEdit.id === todoId) {
+		if (todoEdit && todoEdit.id === todoId) {
+			// si todoEdit esta en null rompe, entonces hay que hacer ese if condicional a todoEdit
 			setTodoEdit(null);
 		}
 		const changedTodos = todos.filter(

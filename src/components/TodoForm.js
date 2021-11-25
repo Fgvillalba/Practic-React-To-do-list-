@@ -70,9 +70,9 @@ const TodoForm = ({
 
 	return (
 		<div>
-			<h1>
+			<h2 className="text-center display-5">
 				{todoEdit ? "Editar tarea" : "Nueva tarea"}
-			</h1>
+			</h2>
 			{todoEdit && (
 				<button
 					onClick={() => setTodoEdit(null)}
