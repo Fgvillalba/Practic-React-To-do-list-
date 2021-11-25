@@ -37,6 +37,15 @@ const App = () => {
 		setTodos(changedTodos);
 	};
 
+	const addTodo = (todo) => {
+		const newTodo = {
+			...todo,
+			id: Date.now(),
+			complete: false,
+		};
+		setTodos([newTodo, ...todos]);
+	};
+
 	return (
 		<div className="container mt-4">
 			<div className="row">
@@ -48,7 +57,7 @@ const App = () => {
 					/>
 				</div>
 				<div className="col-4">
-					<TodoForm />
+					<TodoForm addTodo={addTodo} />
 				</div>
 			</div>
 		</div>
