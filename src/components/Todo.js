@@ -4,6 +4,7 @@ const Todo = ({
 	todo,
 	deleteTodo,
 	todoToogleCompleted,
+	setTodoEdit,
 }) => {
 	return (
 		<div className="card mt-2">
@@ -26,7 +27,10 @@ const Todo = ({
 				</p>
 				<hr />
 				<div className="d-flex justify-content-end ">
-					<button className="btn btn-sm btn-outline-primary me-2">
+					<button
+						className="btn btn-sm btn-outline-primary me-2"
+						onClick={() => setTodoEdit(todo)}
+					>
 						Editar
 					</button>
 					<button

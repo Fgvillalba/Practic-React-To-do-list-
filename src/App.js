@@ -20,8 +20,12 @@ const initialTodos = [todo1, todo2];
 
 const App = () => {
 	const [todos, setTodos] = useState(initialTodos);
+	const [todoEdit, setTodoEdit] = useState(null);
 
 	const deleteTodo = (todoId) => {
+		if (todoEdit.id === todoId) {
+			setTodoEdit(null);
+		}
 		const changedTodos = todos.filter(
 			(todo) => todo.id !== todoId
 		);
@@ -46,18 +50,32 @@ const App = () => {
 		setTodos([newTodo, ...todos]);
 	};
 
+	const updateTodo = (updatedTodo) => {
+		const changedTodos = todos.map((todo) =>
+			todo.id === updatedTodo.id ? updatedTodo : todo
+		);
+		setTodos(changedTodos);
+		setTodoEdit(null);
+	};
+
 	return (
-		<div className="container mt-4">
+		<div className="container-fluid mt-4 align-items-center">
 			<div className="row">
-				<div className="col-8">
+				<div className="col-4">
 					<TodoList
 						todos={todos}
 						deleteTodo={deleteTodo}
 						todoToogleCompleted={todoToogleCompleted}
+						setTodoEdit={setTodoEdit}
 					/>
 				</div>
 				<div className="col-4">
-					<TodoForm addTodo={addTodo} />
+					<TodoForm
+						addTodo={addTodo}
+						todoEdit={todoEdit}
+						updateTodo={updateTodo}
+						setTodoEdit={setTodoEdit}
+					/>
 				</div>
 			</div>
 		</div>

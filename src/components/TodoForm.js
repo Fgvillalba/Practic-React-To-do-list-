@@ -1,6 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const TodoForm = ({ addTodo }) => {
+const TodoForm = ({
+	addTodo,
+	todoEdit,
+	updateTodo,
+	setTodoEdit,
+}) => {
 	const [textForm, setTextForm] = useState({
 		title: "",
 		description: "",
@@ -8,6 +13,17 @@ const TodoForm = ({ addTodo }) => {
 	const [error, setError] = useState(null);
 	const [successMessage, setSuccessMesage] =
 		useState(null);
+
+	useEffect(() => {
+		if (todoEdit) {
+			setTextForm(todoEdit);
+		} else {
+			setTextForm({
+				title: "",
+				description: "",
+			});
+		}
+	}, [todoEdit]);
 
 	const handleChange = (e) => {
 		const changedText = {
@@ -28,12 +44,24 @@ const TodoForm = ({ addTodo }) => {
 			setError("Debe indicar una descripción");
 			return;
 		}
-		addTodo(textForm);
+
+		if (todoEdit) {
+			updateTodo(textForm);
+		} else {
+			addTodo(textForm);
+		}
+
+		setSuccessMesage(
+			`${
+				todoEdit
+					? "Editado con exito"
+					: "Agregado con exito"
+			}`
+		);
 		setTextForm({
 			title: "",
 			description: "",
 		});
-		setSuccessMesage("Agregado con exito");
 		setTimeout(() => {
 			setSuccessMesage(null);
 		}, 1000);
@@ -42,7 +70,17 @@ const TodoForm = ({ addTodo }) => {
 
 	return (
 		<div>
-			<h1>Nueva Tarea</h1>
+			<h1>
+				{todoEdit ? "Editar tarea" : "Nueva tarea"}
+			</h1>
+			{todoEdit && (
+				<button
+					onClick={() => setTodoEdit(null)}
+					className="btn btn-sm btn-warning mb-2"
+				>
+					Cancelar edicion
+				</button>
+			)}
 			<form onSubmit={(e) => handleSubmit(e)}>
 				<input
 					type="text"
@@ -64,7 +102,9 @@ const TodoForm = ({ addTodo }) => {
 						type="submit"
 						className="btn btn-primary btn-d-block mt-2 "
 					>
-						Agregar tarea
+						{todoEdit
+							? "Actualizar tarea"
+							: "Agregar tarea"}
 					</button>
 				</div>
 			</form>
